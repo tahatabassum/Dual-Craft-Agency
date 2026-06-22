@@ -14,8 +14,16 @@ from .seed import seed_admins
 
 load_dotenv()
 
-# Create all tables
+# Create all tables (runs on every cold start — safe with create_all)
 Base.metadata.create_all(bind=engine)
+
+# Seed admin accounts at module level so it works reliably in Vercel serverless.
+# seed_admins() is idempotent: it skips if admins already exist.
+_db = SessionLocal()
+try:
+    seed_admins(_db)
+finally:
+    _db.close()
 
 ENVIRONMENT = os.getenv("ENVIRONMENT", "production")
 show_docs = ENVIRONMENT == "development"
@@ -93,16 +101,6 @@ app.include_router(auth_router.router, prefix="/api/auth", tags=["Auth"])
 app.include_router(blog_router.router, prefix="/api/blog", tags=["Blog"])
 app.include_router(contact_router.router, prefix="/api/contact", tags=["Contact"])
 
-
-# ─── Startup: seed admin accounts ────────────────────────────────────────────
-
-@app.on_event("startup")
-def on_startup():
-    db = SessionLocal()
-    try:
-        seed_admins(db)
-    finally:
-        db.close()
 
 
 @app.get("/")
