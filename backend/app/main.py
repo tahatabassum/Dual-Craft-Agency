@@ -1,6 +1,5 @@
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
 from fastapi.responses import JSONResponse
 import os
 import logging
@@ -74,10 +73,19 @@ async def global_exception_handler(request: Request, exc: Exception):
         content={"detail": "An internal server error occurred. Please contact system support."},
     )
 
-# ─── Static files for uploaded images ────────────────────────────────────────
+# ─── Static files for uploaded images (local dev only) ──────────────────────
+# In production (Vercel), the filesystem is read-only — images go to Supabase Storage.
+# Only mount local uploads if the directory already exists (i.e. local development).
 
-os.makedirs("uploads", exist_ok=True)
-app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
+if ENVIRONMENT == "development":
+    try:
+        from fastapi.staticfiles import StaticFiles
+        import pathlib
+        uploads_path = pathlib.Path("uploads")
+        uploads_path.mkdir(exist_ok=True)
+        app.mount("/uploads", StaticFiles(directory=str(uploads_path)), name="uploads")
+    except Exception as e:
+        print(f"[WARNING] Could not mount local uploads directory: {e}")
 
 # ─── Routers ─────────────────────────────────────────────────────────────────
 
