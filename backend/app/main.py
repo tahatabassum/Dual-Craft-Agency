@@ -78,14 +78,9 @@ async def global_exception_handler(request: Request, exc: Exception):
         )
     
     # Generic, safe response in production to avoid leaking database schemas, credentials, or code details
-    import traceback
     return JSONResponse(
         status_code=500,
-        content={
-            "detail": "An internal server error occurred. Please contact system support.",
-            "error_msg": str(exc),
-            "traceback": traceback.format_exc()
-        },
+        content={"detail": "An internal server error occurred. Please contact system support."},
     )
 
 # ─── Static files for uploaded images (local dev only) ──────────────────────
