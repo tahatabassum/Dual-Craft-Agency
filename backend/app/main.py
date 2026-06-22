@@ -14,16 +14,18 @@ from .seed import seed_admins
 
 load_dotenv()
 
-# Create all tables (runs on every cold start — safe with create_all)
-Base.metadata.create_all(bind=engine)
-
-# Seed admin accounts at module level so it works reliably in Vercel serverless.
-# seed_admins() is idempotent: it skips if admins already exist.
-_db = SessionLocal()
+# Initialize database tables and seed admin accounts.
+# Wrapped in try/except so that any DB connection error at cold-start
+# does NOT crash the module — the CORS middleware must always initialize.
 try:
-    seed_admins(_db)
-finally:
-    _db.close()
+    Base.metadata.create_all(bind=engine)
+    _db = SessionLocal()
+    try:
+        seed_admins(_db)
+    finally:
+        _db.close()
+except Exception as _startup_err:
+    print(f"[WARNING] DB startup init failed (non-fatal): {_startup_err}")
 
 ENVIRONMENT = os.getenv("ENVIRONMENT", "production")
 show_docs = ENVIRONMENT == "development"
