@@ -1,0 +1,37 @@
+# Local Environment Secrets
+backend/.env
+frontend/.env
+*.env
+*.env.*
+
+# Private project info (passwords, keys — never commit)
+info.md
+
+# Python Cache and Environments
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+ENV/
+env/
+
+# Databases
+*.db
+*.sqlite3
+
+# Uploads and Media
+backend/uploads/
+
+# Dependency Directories
+node_modules/
+frontend/node_modules/
+
+# Production Build Directories
+frontend/dist/
+
+# OS Specific Files
+.DS_Store
+Thumbs.db
+

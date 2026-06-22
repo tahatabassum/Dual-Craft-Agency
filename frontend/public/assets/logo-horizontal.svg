@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 52" fill="none">
+  <!-- Icon -->
+  <polygon points="12,4 24,11 24,25 12,32 0,25 0,11" fill="#1A2B4C" opacity="0.95"/>
+  <polygon points="34,20 46,27 46,41 34,48 22,41 22,27" fill="#00C2B8" opacity="0.95"/>
+  <polygon points="24,20 24,25 22,27 22,32 24,32 24,27" fill="#0e7a74" opacity="0.85"/>
+
+  <!-- Wordmark horizontal -->
+  <text x="56" y="34" font-family="Poppins, Inter, sans-serif" font-size="26" font-weight="700" fill="#1A2B4C">Dual</text>
+  <text x="120" y="34" font-family="Poppins, Inter, sans-serif" font-size="26" font-weight="700" fill="#00C2B8">Craft</text>
+</svg>

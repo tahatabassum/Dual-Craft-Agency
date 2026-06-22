@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 64" fill="none">
+  <!-- Icon: two interlocking hexagons -->
+  <polygon points="20,6 34,14 34,30 20,38 6,30 6,14" fill="#1A2B4C" opacity="0.95"/>
+  <polygon points="44,26 58,34 58,50 44,58 30,50 30,34" fill="#00C2B8" opacity="0.95"/>
+  <polygon points="34,26 34,30 30,34 30,38 34,38 34,34" fill="#0e7a74" opacity="0.85"/>
+
+  <!-- Wordmark: "Dual" navy, "Craft" teal -->
+  <text x="70" y="28" font-family="Poppins, Inter, sans-serif" font-size="22" font-weight="700" fill="#1A2B4C">Dual</text>
+  <text x="70" y="54" font-family="Poppins, Inter, sans-serif" font-size="22" font-weight="700" fill="#00C2B8">Craft</text>
+</svg>

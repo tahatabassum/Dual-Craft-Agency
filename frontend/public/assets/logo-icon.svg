@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <!-- Left hexagon (navy) -->
+  <polygon
+    points="20,6 34,14 34,30 20,38 6,30 6,14"
+    fill="#1A2B4C"
+    opacity="0.95"
+  />
+  <!-- Right hexagon (teal) -->
+  <polygon
+    points="44,26 58,34 58,50 44,58 30,50 30,34"
+    fill="#00C2B8"
+    opacity="0.95"
+  />
+  <!-- Overlap region blend -->
+  <polygon
+    points="34,26 34,30 30,34 30,38 34,38 34,34"
+    fill="#0e7a74"
+    opacity="0.85"
+  />
+</svg>
