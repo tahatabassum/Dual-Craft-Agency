@@ -11,19 +11,7 @@ export default function WhatsAppFAB() {
   const [hovered, setHovered] = useState(false);
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3">
-      {/* Tooltip */}
-      <div
-        className={`transition-all duration-300 ${
-          hovered ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-3 pointer-events-none'
-        }`}
-      >
-        <div className="bg-navy text-white text-sm font-medium px-3 py-2 rounded-lg whitespace-nowrap shadow-lg">
-          Chat with us on WhatsApp
-          <div className="absolute right-[-6px] top-1/2 -translate-y-1/2 w-0 h-0 border-t-4 border-b-4 border-l-[6px] border-transparent border-l-navy" />
-        </div>
-      </div>
-
+    <div className="fixed bottom-6 left-6 z-50 flex items-center gap-3">
       {/* FAB Button */}
       <a
         href={WHATSAPP_URL}
@@ -40,6 +28,18 @@ export default function WhatsAppFAB() {
       >
         <MessageCircle size={26} fill="white" strokeWidth={0} />
       </a>
+
+      {/* Tooltip */}
+      <div
+        className={`transition-all duration-300 pointer-events-none ${
+          hovered ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-3'
+        }`}
+      >
+        <div className="relative bg-navy text-white text-sm font-medium px-3 py-2 rounded-lg whitespace-nowrap shadow-lg">
+          Chat with us on WhatsApp
+          <div className="absolute left-[-6px] top-1/2 -translate-y-1/2 w-0 h-0 border-t-4 border-b-4 border-r-[6px] border-transparent border-r-navy" />
+        </div>
+      </div>
     </div>
   );
 }
