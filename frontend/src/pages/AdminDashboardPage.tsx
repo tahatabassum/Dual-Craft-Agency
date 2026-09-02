@@ -4,6 +4,8 @@ import { Plus, Edit2, Trash2, Eye, EyeOff, X, Check, LogOut, FileText } from 'lu
 import { blogApi } from '../lib/api';
 import { useAuth } from '../hooks/useAuth';
 import type { BlogPost, BlogPostCreate, BlogPostUpdate } from '../types';
+import MarkdownToolbar from '../components/MarkdownToolbar';
+import MarkdownRenderer from '../components/MarkdownRenderer';
 
 type ModalState =
   | { type: 'none' }
@@ -204,12 +206,20 @@ function PostForm({
   const [coverImage, setCoverImage] = useState(initial?.cover_image || '');
   const [published, setPublished] = useState(initial?.published ?? false);
   const [preview, setPreview] = useState(false);
+  const bodyTextareaRef = useRef<HTMLTextAreaElement>(null);
 
   // Image upload and crop states
   const [cropSrc, setCropSrc] = useState<string | null>(null);
   const [cropperOpen, setCropperOpen] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState('');
+
+  const handleInlineImageUpload = async (file: File): Promise<string> => {
+    const formData = new FormData();
+    formData.append('file', file);
+    const res = await blogApi.upload(formData);
+    return res.data.url;
+  };
 
   const handleTitleChange = (v: string) => {
     setTitle(v);
@@ -341,25 +351,44 @@ function PostForm({
             <button
               type="button"
               onClick={() => setPreview(!preview)}
-              className="text-xs text-teal font-medium flex items-center gap-1"
+              className="text-xs text-teal font-medium flex items-center gap-1.5 px-2 py-1 rounded hover:bg-teal/5 transition-colors"
             >
-              {preview ? <EyeOff size={12} /> : <Eye size={12} />}
-              {preview ? 'Edit' : 'Preview'}
+              {preview ? <EyeOff size={13} /> : <Eye size={13} />}
+              {preview ? 'Edit Mode' : 'Live Preview'}
             </button>
           </div>
+
           {preview ? (
-            <div className="min-h-[200px] p-4 bg-offwhite rounded-lg border border-navy/20 prose prose-sm max-w-none text-charcoal/80">
-              <pre className="whitespace-pre-wrap font-sans text-sm">{body || 'Nothing to preview...'}</pre>
+            <div className="min-h-[320px] max-h-[500px] overflow-y-auto p-6 bg-white rounded-xl border border-navy/20 shadow-inner">
+              {body.trim() ? (
+                <MarkdownRenderer content={body} />
+              ) : (
+                <p className="text-charcoal/40 italic text-sm">Nothing to preview yet. Switch to Edit Mode to write markdown.</p>
+              )}
             </div>
           ) : (
-            <textarea
-              required
-              rows={12}
-              value={body}
-              onChange={(e) => setBody(e.target.value)}
-              className="form-textarea font-mono text-sm"
-              placeholder="Write your post content in Markdown..."
-            />
+            <div className="border border-navy/20 rounded-xl overflow-hidden focus-within:border-teal focus-within:ring-2 focus-within:ring-teal/20 transition-all bg-white shadow-sm">
+              {/* Sticky Formatting Toolbar */}
+              <div className="sticky top-0 z-20">
+                <MarkdownToolbar
+                  textareaRef={bodyTextareaRef}
+                  value={body}
+                  onChange={setBody}
+                  onUploadImage={handleInlineImageUpload}
+                />
+              </div>
+
+              {/* Textarea */}
+              <textarea
+                ref={bodyTextareaRef}
+                required
+                rows={14}
+                value={body}
+                onChange={(e) => setBody(e.target.value)}
+                className="w-full p-4 font-mono text-sm text-charcoal bg-white border-0 focus:ring-0 focus:outline-none resize-y leading-relaxed"
+                placeholder="Write your post content in Markdown..."
+              />
+            </div>
           )}
         </div>
 
